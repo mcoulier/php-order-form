@@ -22,7 +22,7 @@
             </li>
         </ul>
     </nav>
-    <form method="post">
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="email">E-mail:</label>
@@ -40,8 +40,8 @@
                     <input type="text" name="street" id="street" class="form-control">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="streetnumber">Street number:</label>
-                    <input type="text" id="streetnumber" name="streetnumber" class="form-control">
+                    <label for="streetNumber">Street number:</label>
+                    <input type="text" id="streetNumber" name="streetNumber" class="form-control">
                 </div>
             </div>
             <div class="form-row">
