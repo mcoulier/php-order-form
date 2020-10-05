@@ -5,6 +5,20 @@ declare(strict_types=1);
 //we are going to use session variables so we need to enable sessions
 session_start();
 
+//Session variables
+if (!isset($_SESSION['street'])){
+    $_SESSION['street'] = "";
+}
+if (!isset($_SESSION['streetNumber'])){
+    $_SESSION['streetNumber'] = "";
+}
+if (!isset($_SESSION['city'])){
+    $_SESSION['city'] = "";
+}
+if (!isset($_SESSION['zipcode'])){
+    $_SESSION['zipcode'] = "";
+}
+
 function whatIsHappening() {
     echo '<h2>$_GET</h2>';
     var_dump($_GET);
@@ -15,8 +29,9 @@ function whatIsHappening() {
     echo '<h2>$_SESSION</h2>';
     var_dump($_SESSION);
 }
+
 //Getting input data forms.
-//Error handling if field is empty
+//Error handling if field is empty or incorrect.
 $emailErr = $streetErr = $streetNumberErr = $cityErr = $zipcodeErr = "";
 $email = $street = $streetNumber = $city = $zipcode = "";
 
@@ -24,33 +39,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["email"]) || !filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
         $emailErr = "* E-mail is required";
     } else {
-        $email = getData($_POST["email"]);
+        $email = getData($_POST['email']);
     }
 
     if (empty($_POST["street"]) || !preg_match("/^[a-zA-Z]+$/", $_POST["street"])) {
         $streetErr = "* Street name is required";
     } else {
         $street = getData($_POST["street"]);
+        $_SESSION['street'] = $street;
     }
 
     if (empty($_POST["streetNumber"]) || !preg_match('/^[1-9][0-9]*$/', $_POST["streetNumber"])) {
         $streetNumberErr = "* Street number is required";
     } else {
         $streetNumber = getData($_POST["streetNumber"]);
+        $_SESSION['streetNumber'] = $streetNumber;
     }
 
     if (empty($_POST["city"]) || !preg_match("/^[a-zA-Z]+$/", $_POST["city"])) {
         $cityErr = "* City name is required";
     } else {
         $city = getData($_POST["city"]);
+        $_SESSION['city'] = $city;
     }
 
-    if (empty($_POST["zipcode"]) || !preg_match('/^[1-9][0-9]*$/', $_POST["zipcode"])) {
+    if (empty($_POST["zipcode"]) || !preg_match('/^[1-9][0-9]+$/', $_POST["zipcode"])) {
         $zipcodeErr = "* Zipcode is required";
     } else {
         $zipcode = getData($_POST["zipcode"]);
+        $_SESSION['zipcode'] = $zipcode;
     }
-    echo "Succes! Your order has been sent.";
+
 }
 
 function getData ($data) {
