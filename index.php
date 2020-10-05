@@ -6,6 +6,9 @@ declare(strict_types=1);
 session_start();
 
 //Session variables
+if (!isset($_SESSION['email'])){
+    $_SESSION['email'] = "";
+}
 if (!isset($_SESSION['street'])){
     $_SESSION['street'] = "";
 }
@@ -36,6 +39,13 @@ $emailErr = $streetErr = $streetNumberErr = $cityErr = $zipcodeErr = "";
 $email = $street = $streetNumber = $city = $zipcode = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $_SESSION['email'] = $_POST["email"];
+    $_SESSION['street'] = $_POST["street"];
+    $_SESSION['streetNumber'] = $_POST["streetNumber"];
+    $_SESSION['city'] = $_POST["city"];
+    $_SESSION['zipcode'] = $_POST["zipcode"];
+
     if (empty($_POST["email"]) || !filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
         $emailErr = "* E-mail is required";
     } else {
@@ -46,30 +56,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $streetErr = "* Street name is required";
     } else {
         $street = getData($_POST["street"]);
-        $_SESSION['street'] = $street;
     }
 
     if (empty($_POST["streetNumber"]) || !preg_match('/^[1-9][0-9]*$/', $_POST["streetNumber"])) {
         $streetNumberErr = "* Street number is required";
     } else {
         $streetNumber = getData($_POST["streetNumber"]);
-        $_SESSION['streetNumber'] = $streetNumber;
     }
 
     if (empty($_POST["city"]) || !preg_match("/^[a-zA-Z]+$/", $_POST["city"])) {
         $cityErr = "* City name is required";
     } else {
         $city = getData($_POST["city"]);
-        $_SESSION['city'] = $city;
     }
 
     if (empty($_POST["zipcode"]) || !preg_match('/^[1-9][0-9]+$/', $_POST["zipcode"])) {
         $zipcodeErr = "* Zipcode is required";
     } else {
         $zipcode = getData($_POST["zipcode"]);
-        $_SESSION['zipcode'] = $zipcode;
     }
 
+    if ($emailErr == "" && $streetErr == "" && $streetNumberErr == "" && $cityErr == "" && $zipcodeErr == ""){
+        echo "Your order has been sent!";
+    }
 }
 
 function getData ($data) {
