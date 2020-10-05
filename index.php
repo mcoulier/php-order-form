@@ -15,6 +15,24 @@ function whatIsHappening() {
     echo '<h2>$_SESSION</h2>';
     var_dump($_SESSION);
 }
+//Form validation.
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = getData($_POST["email"]);
+    $street = getData($_POST["street"]);
+    $streetNumber = getData($_POST["streetNumber"]);
+    $city = getData($_POST["city"]);
+    $zipcode = getData($_POST["zipcode"]);
+
+    var_dump($street);
+}
+
+function getData ($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
 
 //your products with their price.
 $products = [
