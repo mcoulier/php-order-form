@@ -15,24 +15,49 @@ function whatIsHappening() {
     echo '<h2>$_SESSION</h2>';
     var_dump($_SESSION);
 }
-//Form validation.
+//Getting input data forms.
+//Error handling if field is empty
+$emailErr = $streetErr = $streetNumberErr = $cityErr = $zipcodeErr = "";
+$email = $street = $streetNumber = $city = $zipcode = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = getData($_POST["email"]);
-    $street = getData($_POST["street"]);
-    $streetNumber = getData($_POST["streetNumber"]);
-    $city = getData($_POST["city"]);
-    $zipcode = getData($_POST["zipcode"]);
+    if (empty($_POST["email"])) {
+        $emailErr = "* E-mail is required";
+    } else {
+        $email = getData($_POST["email"]);
+    }
 
-    var_dump($street);
+    if (empty($_POST["street"])) {
+        $streetErr = "* Street name is required";
+    } else {
+        $street = getData($_POST["street"]);
+    }
+
+    if (empty($_POST["streetNumber"])) {
+        $streetNumberErr = "* Street number is required";
+    } else {
+        $streetNumber = getData($_POST["streetNumber"]);
+    }
+
+    if (empty($_POST["city"])) {
+        $cityErr = "* City name is required";
+    } else {
+        $city = getData($_POST["city"]);
+    }
+
+    if (empty($_POST["zipcode"])) {
+        $zipcodeErr = "* Zipcode is required";
+    } else {
+        $zipcode = getData($_POST["zipcode"]);
+    }
 }
-
 function getData ($data) {
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
+//    var_dump($data);
     return $data;
 }
-
 
 //your products with their price.
 $products = [
