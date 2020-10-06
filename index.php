@@ -37,11 +37,41 @@ function whatIsHappening() {
 
 $emailErr = $streetErr = $streetNumberErr = $cityErr = $zipcodeErr = "";
 $email = $street = $streetNumber = $city = $zipcode = "";
-$totalValue = "";
+$totalValue = 0;
 $deliveryTime = date("H:i", strtotime("+2 Hours"));
 $xDeliveryTime = date("H:i", strtotime("+45 Minutes"));
 
+//your products with their price.
+$food = [
+    ['name' => 'Club Ham', 'price' => 3.20],
+    ['name' => 'Club Cheese', 'price' => 3],
+    ['name' => 'Club Cheese & Ham', 'price' => 4],
+    ['name' => 'Club Chicken', 'price' => 4],
+    ['name' => 'Club Salmon', 'price' => 5]
+];
 
+$drinks = [
+    ['name' => 'Cola', 'price' => 2],
+    ['name' => 'Fanta', 'price' => 2],
+    ['name' => 'Sprite', 'price' => 2],
+    ['name' => 'Ice-tea', 'price' => 3],
+];
+
+//To fix error on homepage and show "food" as default
+if (!isset($_SESSION['products'])){
+    $products = $food;
+} else {
+    $products = $_SESSION['products'];
+}
+
+//If food in url = 1 display food, otherwise drinks
+if (isset($_GET['food'])){
+    if ($_GET['food'] == 1){
+        $products = $food;
+    } else {
+        $products = $drinks;
+    }
+}
 
 //Getting input data forms.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -84,10 +114,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $zipcode = getData($_POST["zipcode"]);
     }
 
+    for ($i = 0; $i <= count($products); $i++){
+        if (isset($products[$i]['name'])){
+            $totalValue += $products[$i]['price'];
+            var_dump($products[$i]);
+        }
+    }
+
+    if (isset($_POST['express_delivery'])){
+        $totalValue += 5;
+    }
+
     if ($emailErr == "" && $streetErr == "" && $streetNumberErr == "" && $cityErr == "" && $zipcodeErr == ""){
         echo "Your order has been sent and will arrive at: " . $deliveryTime . ".";
     }
 }
+
 
 function getData ($data) {
     $data = trim($data);
@@ -97,42 +139,5 @@ function getData ($data) {
     return $data;
 }
 
-//your products with their price.
-$food = [
-    ['name' => 'Club Ham', 'price' => 3.20],
-    ['name' => 'Club Cheese', 'price' => 3],
-    ['name' => 'Club Cheese & Ham', 'price' => 4],
-    ['name' => 'Club Chicken', 'price' => 4],
-    ['name' => 'Club Salmon', 'price' => 5]
-];
-
-$drinks = [
-    ['name' => 'Cola', 'price' => 2],
-    ['name' => 'Fanta', 'price' => 2],
-    ['name' => 'Sprite', 'price' => 2],
-    ['name' => 'Ice-tea', 'price' => 3],
-];
-
-//To fix error on homepage and show "food" as default
-if (!isset($_SESSION['products'])){
-    $products = $food;
-} else {
-    $products = $_SESSION['products'];
-}
-
-//If food in url = 1 display food, otherwise drinks
-if (isset($_GET['food'])){
-    if ($_GET['food'] == 1){
-        $products = $food;
-    } else {
-        $products = $drinks;
-    }
-}
-
-if (isset($_POST['express_delivery'])){
-    $totalValue += 5;
-}
-
-$totalValue = 0;
-
+//whatIsHappening();
 require 'form-view.php';
