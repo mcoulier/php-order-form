@@ -39,6 +39,9 @@ $emailErr = $streetErr = $streetNumberErr = $cityErr = $zipcodeErr = "";
 $email = $street = $streetNumber = $city = $zipcode = "";
 $totalValue = "";
 $deliveryTime = date("H:i", strtotime("+2 Hours"));
+$xDeliveryTime = date("H:i", strtotime("+45 Minutes"));
+
+
 
 //Getting input data forms.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -129,8 +132,6 @@ if (isset($_GET['food'])){
 if (isset($_POST['express_delivery'])){
     $totalValue += 5;
 }
-
-
 
 $totalValue = 0;
 
