@@ -68,8 +68,10 @@ if (!isset($_SESSION['products'])){
 if (isset($_GET['food'])){
     if ($_GET['food'] == 1){
         $products = $food;
+        $_SESSION['products'] = $food;
     } else {
         $products = $drinks;
+        $_SESSION['products'] = $drinks;
     }
 }
 
@@ -113,13 +115,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $zipcode = getData($_POST["zipcode"]);
     }
-//Loop array
+
+//Loop array to get price when selected
     for ($i = 0; $i <= count($products); $i++){
         if (isset($_POST["products"][$i])){
             $totalValue += $products[$i]['price'];
         }
     }
 
+//If express delivery is checked, increase value by 5 and delivery time by 45min, else 2 hours & no charge
     if (isset($_POST['express_delivery'])){
         $totalValue += 5;
         $deliveryTime = date("H:i", strtotime("+45 Minutes"));
