@@ -1,9 +1,11 @@
 <?php
 //this line makes PHP behave in a more strict way
 declare(strict_types=1);
-
 //we are going to use session variables so we need to enable sessions
 session_start();
+
+//Setting timezone for correct hour
+date_default_timezone_set("Europe/Brussels");
 
 //Session variables
 if (!isset($_SESSION['email'])){
@@ -35,6 +37,8 @@ function whatIsHappening() {
 
 $emailErr = $streetErr = $streetNumberErr = $cityErr = $zipcodeErr = "";
 $email = $street = $streetNumber = $city = $zipcode = "";
+$totalValue = "";
+$deliveryTime = date("H:i", strtotime("+2 Hours"));
 
 //Getting input data forms.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -71,14 +75,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $city = getData($_POST["city"]);
     }
 
-    if (empty($_POST["zipcode"]) || !preg_match('/^[1-9][0-9]+$/', $_POST["zipcode"])) {
+    if (empty($_POST["zipcode"]) || !preg_match('/^[1-9][0-9]{3}+$/', $_POST["zipcode"])) {
         $zipcodeErr = "* Zipcode is required";
     } else {
         $zipcode = getData($_POST["zipcode"]);
     }
 
     if ($emailErr == "" && $streetErr == "" && $streetNumberErr == "" && $cityErr == "" && $zipcodeErr == ""){
-        echo "Your order has been sent!";
+        echo "Your order has been sent and will arrive at: " . $deliveryTime . ".";
     }
 }
 
@@ -121,6 +125,12 @@ if (isset($_GET['food'])){
         $products = $drinks;
     }
 }
+
+if (isset($_POST['express_delivery'])){
+    $totalValue += 5;
+}
+
+
 
 $totalValue = 0;
 
