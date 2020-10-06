@@ -38,8 +38,8 @@ function whatIsHappening() {
 $emailErr = $streetErr = $streetNumberErr = $cityErr = $zipcodeErr = "";
 $email = $street = $streetNumber = $city = $zipcode = "";
 $totalValue = 0;
-$deliveryTime = date("H:i", strtotime("+2 Hours"));
-$xDeliveryTime = date("H:i", strtotime("+45 Minutes"));
+$deliveryTime = "";
+//$xDeliveryTime = date("H:i", strtotime("+45 Minutes"));
 
 //your products with their price.
 $food = [
@@ -113,23 +113,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $zipcode = getData($_POST["zipcode"]);
     }
-
+//Loop array
     for ($i = 0; $i <= count($products); $i++){
-        if (isset($products[$i]['name'])){
+        if (isset($_POST["products"][$i])){
             $totalValue += $products[$i]['price'];
-            var_dump($products[$i]);
         }
     }
 
     if (isset($_POST['express_delivery'])){
         $totalValue += 5;
+        $deliveryTime = date("H:i", strtotime("+45 Minutes"));
+    } else {
+        $deliveryTime = date("H:i", strtotime("+2 Hours"));
     }
 
     if ($emailErr == "" && $streetErr == "" && $streetNumberErr == "" && $cityErr == "" && $zipcodeErr == ""){
         echo "Your order has been sent and will arrive at: " . $deliveryTime . ".";
     }
 }
-
 
 function getData ($data) {
     $data = trim($data);
