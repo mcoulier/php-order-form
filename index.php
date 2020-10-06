@@ -33,19 +33,20 @@ function whatIsHappening() {
     var_dump($_SESSION);
 }
 
-//Getting input data forms.
-//Error handling if field is empty or incorrect.
 $emailErr = $streetErr = $streetNumberErr = $cityErr = $zipcodeErr = "";
 $email = $street = $streetNumber = $city = $zipcode = "";
 
+//Getting input data forms.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+//Session variables take data from post variables.
     $_SESSION['email'] = $_POST["email"];
     $_SESSION['street'] = $_POST["street"];
     $_SESSION['streetNumber'] = $_POST["streetNumber"];
     $_SESSION['city'] = $_POST["city"];
     $_SESSION['zipcode'] = $_POST["zipcode"];
 
+//Error handling if field is empty or incorrect.
     if (empty($_POST["email"]) || !filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
         $emailErr = "* E-mail is required";
     } else {
@@ -90,7 +91,7 @@ function getData ($data) {
 }
 
 //your products with their price.
-$products = [
+$food = [
     ['name' => 'Club Ham', 'price' => 3.20],
     ['name' => 'Club Cheese', 'price' => 3],
     ['name' => 'Club Cheese & Ham', 'price' => 4],
@@ -98,12 +99,21 @@ $products = [
     ['name' => 'Club Salmon', 'price' => 5]
 ];
 
-$products = [
+$drinks = [
     ['name' => 'Cola', 'price' => 2],
     ['name' => 'Fanta', 'price' => 2],
     ['name' => 'Sprite', 'price' => 2],
     ['name' => 'Ice-tea', 'price' => 3],
 ];
+
+//If food in url = 1 display food, otherwise drinks
+if (isset($_GET['food'])){
+    if ($_GET['food'] == 1){
+        $products = $food;
+    } else {
+        $products = $drinks;
+    }
+}
 
 $totalValue = 0;
 
