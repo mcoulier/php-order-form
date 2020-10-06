@@ -106,6 +106,13 @@ $drinks = [
     ['name' => 'Ice-tea', 'price' => 3],
 ];
 
+//To fix error on homepage and show "food" as default
+if (!isset($_SESSION['products'])){
+    $products = $food;
+} else {
+    $products = $_SESSION['products'];
+}
+
 //If food in url = 1 display food, otherwise drinks
 if (isset($_GET['food'])){
     if ($_GET['food'] == 1){
