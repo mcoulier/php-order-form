@@ -40,6 +40,8 @@ $email = $street = $streetNumber = $city = $zipcode = "";
 $totalValue = 0;
 $deliveryTime = "";
 
+$order = array();
+
 //$xDeliveryTime = date("H:i", strtotime("+45 Minutes"));
 
 //your products with their price.
@@ -121,7 +123,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     for ($i = 0; $i <= count($products); $i++){
         if (isset($_POST["products"][$i])){
             $totalValue += $products[$i]['price'];
-            $order = $products[$i]['name'];
+//            $order = $products[$i]['name'];
+            array_push($order, $products[$i]['name']);
+            var_dump($order);
         }
     }
 
@@ -133,13 +137,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $deliveryTime = date("H:i", strtotime("+2 Hours"));
     }
 
-
     if ($emailErr == "" && $streetErr == "" && $streetNumberErr == "" && $cityErr == "" && $zipcodeErr == ""){
         echo "Your order has been sent and will arrive at: " . $deliveryTime . ".";
         mail('yitih78159@intainfo.com', 'Your Order', $order);
     }
-
-
 }
 
 function getData ($data) {
