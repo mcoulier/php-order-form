@@ -125,7 +125,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (isset($_POST["products"][$i])){
                 $totalValue += $products[$i]['price'];
                 array_push($order, $products[$i]['name']);
-                var_dump($products[$i]['name']);
             }
         }
 
@@ -137,8 +136,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $deliveryTime = date("H:i", strtotime("+2 Hours"));
         }
 
+        $msg = "Your order of: " . implode(", ", $order) . " will arrive at: " . $deliveryTime;
+        var_dump($msg);
+        mail('dixeja9741@wpsavy.com', 'Your Order', $msg);
+
         echo "Your order has been sent and will arrive at: " . $deliveryTime . ".";
-//        mail('yitih78159@intainfo.com', 'Your Order', $order);
     }
 }
 
