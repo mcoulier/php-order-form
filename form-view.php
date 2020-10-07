@@ -29,7 +29,10 @@
                 <input type="text" id="email" name="email" class="form-control" value="<?php echo $_SESSION['email'];?>">
                 <span class="error"><?php echo $emailErr;?></span>
             </div>
-            <div></div>
+            <div>
+                <h3>Order status:</h3>
+                <span class="confirmation"><?php echo $confirmation;?></span>
+            </div>
         </div>
 
         <fieldset>

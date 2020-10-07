@@ -38,7 +38,7 @@ function whatIsHappening() {
 $emailErr = $streetErr = $streetNumberErr = $cityErr = $zipcodeErr = "";
 $email = $street = $streetNumber = $city = $zipcode = "";
 $totalValue = 0;
-$deliveryTime = "";
+$deliveryTime = $confirmation = "";
 $order = array();
 
 //$xDeliveryTime = date("H:i", strtotime("+45 Minutes"));
@@ -137,10 +137,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         $msg = "Your order of: " . implode(", ", $order) . " will arrive at: " . $deliveryTime;
-        var_dump($msg);
-        mail('dixeja9741@wpsavy.com', 'Your Order', $msg);
+        $headers = 'From: webmaster@example.com' . "\r\n" .
+            'Reply-To: webmaster@example.com' . "\r\n" .
+            'X-Mailer: PHP/' . phpversion();
 
-        echo "Your order has been sent and will arrive at: " . $deliveryTime . ".";
+        echo $msg;
+        mail('dixeja9741@wpsavy.com', 'Your Order', $msg, $headers);
+
+        $confirmation = "Your order has been sent and will arrive at: " . $deliveryTime . ".";
     }
 }
 
