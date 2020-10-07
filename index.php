@@ -39,7 +39,6 @@ $emailErr = $streetErr = $streetNumberErr = $cityErr = $zipcodeErr = "";
 $email = $street = $streetNumber = $city = $zipcode = "";
 $totalValue = 0;
 $deliveryTime = "";
-
 $order = array();
 
 //$xDeliveryTime = date("H:i", strtotime("+45 Minutes"));
@@ -67,7 +66,7 @@ if (!isset($_SESSION['products'])){
     $products = $_SESSION['products'];
 }
 
-//If food in url = 1 display food, otherwise drinks
+//If food in url = 1 display food, otherwise drinks, also change the session to correct array.
 if (isset($_GET['food'])){
     if ($_GET['food'] == 1){
         $products = $food;
@@ -119,27 +118,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $zipcode = getData($_POST["zipcode"]);
     }
 
-//Loop array to get price when selected
-    for ($i = 0; $i <= count($products); $i++){
-        if (isset($_POST["products"][$i])){
-            $totalValue += $products[$i]['price'];
-//            $order = $products[$i]['name'];
-            array_push($order, $products[$i]['name']);
-            var_dump($order);
-        }
-    }
-
-//If express delivery is checked, increase value by 5 and delivery time by 45min, else 2 hours & no charge
-    if (isset($_POST['express_delivery'])){
-        $totalValue += 5;
-        $deliveryTime = date("H:i", strtotime("+45 Minutes"));
-    } else {
-        $deliveryTime = date("H:i", strtotime("+2 Hours"));
-    }
-
     if ($emailErr == "" && $streetErr == "" && $streetNumberErr == "" && $cityErr == "" && $zipcodeErr == ""){
+
+        //Loop array to get price when selected
+        for ($i = 0; $i <= count($products); $i++){
+            if (isset($_POST["products"][$i])){
+                $totalValue += $products[$i]['price'];
+                array_push($order, $products[$i]['name']);
+                var_dump($products[$i]['name']);
+            }
+        }
+
+        //If express delivery is checked, increase value by 5 and delivery time by 45min, else 2 hours & no charge
+        if (isset($_POST['express_delivery'])){
+            $totalValue += 5;
+            $deliveryTime = date("H:i", strtotime("+45 Minutes"));
+        } else {
+            $deliveryTime = date("H:i", strtotime("+2 Hours"));
+        }
+
         echo "Your order has been sent and will arrive at: " . $deliveryTime . ".";
-        mail('yitih78159@intainfo.com', 'Your Order', $order);
+//        mail('yitih78159@intainfo.com', 'Your Order', $order);
     }
 }
 
