@@ -97,10 +97,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['zipcode'] = $_POST["zipcode"];
 
 //Error handling if field is empty or incorrect.
-    if (empty($_POST["email"]) || !filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-        $emailErr = "* E-mail is required";
-    } else {
+    if (empty($_POST["email"]) ){
+        $email = "";
+        } else {
         $email = getData($_POST['email']);
+        if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)){
+            $emailErr = "Invalid email";
+        }
     }
 
     if (empty($_POST["street"]) || !preg_match("/^[a-zA-Z]+$/", $_POST["street"])) {
