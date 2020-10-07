@@ -8,38 +8,47 @@ session_start();
 date_default_timezone_set("Europe/Brussels");
 
 //Session variables
-if (!isset($_SESSION['email'])){
+if (!isset($_SESSION['email'])) {
     $_SESSION['email'] = "";
 }
-if (!isset($_SESSION['street'])){
+if (!isset($_SESSION['street'])) {
     $_SESSION['street'] = "";
 }
-if (!isset($_SESSION['streetNumber'])){
+if (!isset($_SESSION['streetNumber'])) {
     $_SESSION['streetNumber'] = "";
 }
-if (!isset($_SESSION['city'])){
+if (!isset($_SESSION['city'])) {
     $_SESSION['city'] = "";
 }
-if (!isset($_SESSION['zipcode'])){
+if (!isset($_SESSION['zipcode'])) {
     $_SESSION['zipcode'] = "";
 }
 
-function whatIsHappening() {
-    echo '<h2>$_GET</h2>';
-    var_dump($_GET);
-    echo '<h2>$_POST</h2>';
-    var_dump($_POST);
+//Cookie variables
+if (!isset($_COOKIE['cookieTotal'])) {
+    $_COOKIE['cookieTotal'] = 0;
+} else{
+    $totalValue = $_COOKIE['cookieTotal'];
+
+}
+
+function whatIsHappening()
+{
+//    echo '<h2>$_GET</h2>';
+//    var_dump($_GET);
+//    echo '<h2>$_POST</h2>';
+//    var_dump($_POST);
     echo '<h2>$_COOKIE</h2>';
     var_dump($_COOKIE);
-    echo '<h2>$_SESSION</h2>';
-    var_dump($_SESSION);
+//    echo '<h2>$_SESSION</h2>';
+//    var_dump($_SESSION);
 }
 
 $emailErr = $streetErr = $streetNumberErr = $cityErr = $zipcodeErr = "";
 $email = $street = $streetNumber = $city = $zipcode = "";
-$totalValue = 0;
 $deliveryTime = $confirmation = "";
 $order = array();
+$totalValue = 0;
 
 //$xDeliveryTime = date("H:i", strtotime("+45 Minutes"));
 
@@ -60,15 +69,15 @@ $drinks = [
 ];
 
 //To fix error on homepage and show "food" as default
-if (!isset($_SESSION['products'])){
+if (!isset($_SESSION['products'])) {
     $products = $food;
 } else {
     $products = $_SESSION['products'];
 }
 
 //If food in url = 1 display food, otherwise drinks, also change the session to correct array.
-if (isset($_GET['food'])){
-    if ($_GET['food'] == 1){
+if (isset($_GET['food'])) {
+    if ($_GET['food'] == 1) {
         $products = $food;
         $_SESSION['products'] = $food;
     } else {
@@ -118,18 +127,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $zipcode = getData($_POST["zipcode"]);
     }
 
-    if ($emailErr == "" && $streetErr == "" && $streetNumberErr == "" && $cityErr == "" && $zipcodeErr == ""){
+    if ($emailErr == "" && $streetErr == "" && $streetNumberErr == "" && $cityErr == "" && $zipcodeErr == "") {
 
         //Loop array to get price when selected
-        for ($i = 0; $i <= count($products); $i++){
-            if (isset($_POST["products"][$i])){
+        for ($i = 0; $i <= count($products); $i++) {
+            if (isset($_POST["products"][$i])) {
                 $totalValue += $products[$i]['price'];
                 array_push($order, $products[$i]['name']);
+                setcookie("cookieTotal", strval($totalValue), time() + (86400 * 30), "/");
             }
         }
 
+
         //If express delivery is checked, increase value by 5 and delivery time by 45min, else 2 hours & no charge
-        if (isset($_POST['express_delivery'])){
+        if (isset($_POST['express_delivery'])) {
             $totalValue += 5;
             $deliveryTime = date("H:i", strtotime("+45 Minutes"));
         } else {
@@ -137,18 +148,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         $msg = "Your order of: " . implode(", ", $order) . " will arrive at: " . $deliveryTime;
-        $headers = 'From: webmaster@example.com' . "\r\n" .
-            'Reply-To: webmaster@example.com' . "\r\n" .
-            'X-Mailer: PHP/' . phpversion();
+//        $headers = 'From: MacBook Pro van Michiel' . "\r\n" .
+//            'Reply-To: MacBook Pro van Michiel' . "\r\n" .
+//            'X-Mailer: PHP/' . phpversion();
 
         echo $msg;
-        mail('dixeja9741@wpsavy.com', 'Your Order', $msg, $headers);
+//        mail('dixeja9741@wpsavy.com', 'Your Order', $msg, $headers);
 
         $confirmation = "Your order has been sent and will arrive at: " . $deliveryTime . ".";
     }
 }
 
-function getData ($data) {
+function getData($data)
+{
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
@@ -156,5 +168,5 @@ function getData ($data) {
     return $data;
 }
 
-//whatIsHappening();
+whatIsHappening();
 require 'form-view.php';
