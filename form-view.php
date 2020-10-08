@@ -66,10 +66,10 @@
         </fieldset>
 
         <fieldset>
-            <legend>Products</legend>
-            <?php foreach ($food as $value): ?>
+            <legend>products</legend>
+            <?php foreach ($products as $value): ?>
                 <label>
-                    <input type="checkbox" value="1" name="Products"/> <?php echo $value->get_name() ?> -
+                    <input type="checkbox" value="1" name="products"/> <?php echo $value->get_name() ?> -
                     &euro; <?php echo $value->get_price(); ?></label><br />
             <?php endforeach; ?>
         </fieldset>
