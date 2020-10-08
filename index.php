@@ -1,8 +1,12 @@
 <?php
 //this line makes PHP behave in a more strict way
 declare(strict_types=1);
+
 //we are going to use session variables so we need to enable sessions
 session_start();
+
+//Get info from class file
+require 'products.php';
 
 //Setting timezone for correct hour
 date_default_timezone_set("Europe/Brussels");
@@ -32,17 +36,17 @@ if (!isset($_COOKIE['cookieTotal'])) {
 
 }
 
-function whatIsHappening()
+/*function whatIsHappening()
 {
-//    echo '<h2>$_GET</h2>';
-//    var_dump($_GET);
-//    echo '<h2>$_POST</h2>';
-//    var_dump($_POST);
+    echo '<h2>$_GET</h2>';
+    var_dump($_GET);
+    echo '<h2>$_POST</h2>';
+    var_dump($_POST);
     echo '<h2>$_COOKIE</h2>';
     var_dump($_COOKIE);
-//    echo '<h2>$_SESSION</h2>';
-//    var_dump($_SESSION);
-}
+    echo '<h2>$_SESSION</h2>';
+    var_dump($_SESSION);
+}*/
 
 $emailErr = $streetErr = $streetNumberErr = $cityErr = $zipcodeErr = "";
 $email = $street = $streetNumber = $city = $zipcode = "";
@@ -53,7 +57,7 @@ $totalValue = 0;
 //$xDeliveryTime = date("H:i", strtotime("+45 Minutes"));
 
 //your products with their price.
-$food = [
+/*$food = [
     ['name' => 'Club Ham', 'price' => 3.20],
     ['name' => 'Club Cheese', 'price' => 3],
     ['name' => 'Club Cheese & Ham', 'price' => 4],
@@ -66,7 +70,7 @@ $drinks = [
     ['name' => 'Fanta', 'price' => 2],
     ['name' => 'Sprite', 'price' => 2],
     ['name' => 'Ice-tea', 'price' => 3],
-];
+];*/
 
 //To fix error on homepage and show "food" as default
 if (!isset($_SESSION['products'])) {
@@ -171,5 +175,5 @@ function getData($data)
     return $data;
 }
 
-whatIsHappening();
+//whatIsHappening();
 require 'form-view.php';
