@@ -1,5 +1,5 @@
 <?php
-class Products {
+class products {
     // Properties
     public $name;
     public $price;
@@ -24,15 +24,15 @@ class Products {
 //    }
 }
 
-$clubHam = new Products("Club Ham", 3.20);
-$clubCheese = new Products("Club Cheese", 3);
-$clubCheeseHam = new Products("Club Cheese & Ham", 4);
-$clubChicken = new Products("Club Chicken", 4);
-$clubSalmon = new Products("Club Salmon", 5);
-$cola = new Products("Cola", 2);
-$fanta = new Products("Fanta", 2);
-$sprite = new Products("Sprite", 2);
-$iceTea = new Products("Ice-Tea", 3);
+$clubHam = new products("Club Ham", 3.20);
+$clubCheese = new products("Club Cheese", 3);
+$clubCheeseHam = new products("Club Cheese & Ham", 4);
+$clubChicken = new products("Club Chicken", 4);
+$clubSalmon = new products("Club Salmon", 5);
+$cola = new products("Cola", 2);
+$fanta = new products("Fanta", 2);
+$sprite = new products("Sprite", 2);
+$iceTea = new products("Ice-Tea", 3);
 
 $food = array();
 array_push($food, $clubHam, $clubCheese, $clubCheeseHam, $clubChicken, $clubSalmon);
